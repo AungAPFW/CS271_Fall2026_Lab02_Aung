@@ -1,5 +1,5 @@
 # Lab 02 My Answers
-**Student Name:** YOUR NAME HERE
+**Student Name:** Aung Aung
 
 ---
 
@@ -43,10 +43,11 @@ Step 3 — Identify each field:
 **1. `MOVZ X0, #5`**
 
 Hex encoding (from disassembly log): `0x`
+0xd28000a0
 
 Binary (32-bit):
 ```
-_    _    _    _    _    _    _    _
+1101 0010 1000 0000 0000 0000 1010 0000
 ____ ____ ____ ____ ____ ____ ____ ____
 ```
 
@@ -55,20 +56,20 @@ ____ ____ ____ ____ ____ ____ ____ ____
 | sf | 10    | 100101 | hw    | imm16 | Rd  |
 |    |       |        |       |       |     |
 
-- `sf` =
-- `hw` =
-- `imm16` =
-- `Rd` =
+- `sf` = 1
+- `hw` = 00
+- `imm16` = 5
+- `Rd` = x0
 
 ---
 
 **2. `ADD X4, X4, X0`**
 
 Hex encoding (from disassembly log): `0x`
-
+0x8b000084
 Binary (32-bit):
 ```
-_    _    _    _    _    _    _    _
+1000 1011 0000 0000 0000 0000 1000 0100
 ____ ____ ____ ____ ____ ____ ____ ____
 ```
 
@@ -77,19 +78,19 @@ ____ ____ ____ ____ ____ ____ ____ ____
 | sf | op | S  | 01011 | shift | 0  | Rm    | imm6  | Rn  | Rd  |
 |    |    |    |       |       |   |       |       |     |     |
 
-- `Rm` (binary) =
-- `Rn` (binary) =
-- `Rd` (binary) =
+- `Rm` (binary) = 00000
+- `Rn` (binary) = 00100
+- `Rd` (binary) = 00100
 
 ---
 
 **3. `SUBS X0, X0, X1`**
 
 Hex encoding (from disassembly log): `0x`
-
+0xeb010000
 Binary (32-bit):
 ```
-_    _    _    _    _    _    _    _
+1110 1011 0000 0001 0000 0000 0000 0000
 ____ ____ ____ ____ ____ ____ ____ ____
 ```
 
@@ -101,15 +102,15 @@ ____ ____ ____ ____ ____ ____ ____ ____
 Compare the `op` and `S` bits to `ADD` above:
 - How does the encoding differ to signal that condition flags should be updated?
 
----
+--- ADD has op=0 and S=0. SUBS has op=1 and S=1.The S bit being 1 indicates the condition flags are updated.
 
 **4. `B.NE sum_loop`**
 
 Hex encoding (from disassembly log): `0x`
-
+0x54ffffa1
 Binary (32-bit):
 ```
-_    _    _    _    _    _    _    _
+0101 0100 1111 1111 1111 1111 1010 0001
 ____ ____ ____ ____ ____ ____ ____ ____
 ```
 
@@ -118,14 +119,14 @@ ____ ____ ____ ____ ____ ____ ____ ____
 | 01010100 | imm19 | 0 | cond |
 |          |       |   |      |
 
-- `imm19` (binary) =
-- `imm19` as a two's complement integer =
-- Byte offset (imm19 × 4) =
-- `B.NE` address (from disassembly) =
-- `sum_loop` address (from disassembly) =
+- `imm19` (binary) = 1111111111111111101
+- `imm19` as a two's complement integer = -3
+- Byte offset (imm19 × 4) = -3 x 4 = -12 bytes
+- `B.NE` address (from disassembly) = 0x1c
+- `sum_loop` address (from disassembly) = 0x10
 - Do they match?
 
----
+--- yes
 
 ## Section 4.1 — Logical Immediate Values
 
@@ -142,13 +143,13 @@ Use this layout to trace the value of X5 step by step before answering.
 
 ---
 
-**X5** (after `MOVZ` + `MOVK`):
+**X5** (after `MOVZ` + `MOVK`): 0x0000000000ffffff
 `X5 = 0x`
 
-**X6** (after `AND X6, X5, #0x00003ffc00003ffc`):
+**X6** (after `AND X6, X5, #0x00003ffc00003ffc`): 0x0000000000003ffc
 `X6 = 0x`
 
-**X7** (after `ORR X7, X5, #0x00003ffc00003ffc`):
+**X7** (after `ORR X7, X5, #0x00003ffc00003ffc`): 0x00003ffc00ffffff
 `X7 = 0x`
 
 ---
@@ -156,4 +157,6 @@ Use this layout to trace the value of X5 step by step before answering.
 ## Section 5 — Instruction Aliases
 
 - What is the base instruction that `CMP X0, X1` translates to?
+SUBS
 - What is the full expanded form (including all operands)?
+SUBS, XZR, X0, X1
